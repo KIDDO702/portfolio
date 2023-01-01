@@ -1,0 +1,109 @@
+<div class="row mt-5 pt-5 px-5">
+            @foreach ($listings as $listing)
+                <div class="col-md-6 col-lg-6 mb-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6 p-3">
+                                    <img src="{{asset('images/images/no-image.png')}}" alt="" class="img-fluid">
+                                </div>
+                                <div class="col-lg-6 py-3 px-2">
+                                    <h5 class="fw-bold text-muted">
+                                        <a href="/listings/{{$listing['id']}}" class="text-decoration-none">{{ $listing->title}}</a>
+                                    </h5>
+                                    <h6 class="text-muted mt-4">{{ $listing->about }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="d-flex justify-content-center">
+            {{-- {{$listings->links()}} --}}
+        </div>
+
+<script>
+    window.carousel = function () {
+        return {
+            container: null
+                            prev: null
+                            next: null
+                            init() {
+                this.container = this.$refs.container
+                this.update()
+                this.container.addEventListener('scroll', this.update.bind(this), { passive: true });
+            },
+            update() {
+                const rect = this.container.getBoundingClientRect();
+                const visibleElements = Array.from(this.container.children).filter((child) => {
+                    const childRect = child.getBoundingClientRect()
+                    return childRect.left >= rect.left && childRect.right <= rect.right;
+                });
+                if (visibleElements.length > 0) {
+                    this.prev = this.getPrevElement(visibleElements);
+                    this.next = this.getNextElement(visibleElements);
+                }
+            },
+            getPrevElement(list) {
+                const sibling = list[0].previousElementSibling;
+                if (sibling instanceof HTMLElement) {
+                    return sibling;
+                }
+                return null;
+            },
+            getNextElement(list) {
+                const sibling = list[list.length - 1].nextElementSibling;
+                if (sibling instanceof HTMLElement) {
+                    return sibling;
+                }
+                return null
+            },
+            scrollTo(element) {
+                const current = this.container;
+                if (!current || !element) return;
+                const nextScrollPosition =
+                    element.offsetLeft +
+                    element.getBoundingClientRect().width / 2 -
+                    current.getBoundingClientRect().width / 2;
+                current.scroll({
+                    left: nextScrollPosition,
+                    behavior: 'smooth',
+                });
+            }
+        };
+    }
+</script>
+
+
+@unless (count($blogs) === 0)
+@foreach ($blogs as $blog)
+<div class="col-lg-4 mb-2">
+    <div class="blog-grid">
+        <div class="blog-grid-img">
+            <a href="#">
+                <img src="{{asset('images/images/react.svg')}}" alt="" class="img-fluid">
+            </a>
+        </div>
+        <div class="blog-grid-info pt-2">
+            <div class="b-meta">
+                <span class="date fw-bold">{{$blog->created_at}} |</span>
+                <span class="meta fw-bold text-uppercase">{{$blog->meta}}</span>
+                <h5 class="fw-bold">{{$blog->title}}</h5>
+                <p>{{ $blog->about }}</p>
+            </div>
+        </div>
+        <div class="btn-grid">
+            <a href="#" class="fw-bold text-decoration-none text-uppercase text-danger"
+                style="font-size: 14px; border-bottom: 2px solid currentColor;">Read More</a>
+        </div>
+    </div>
+</div>
+@endforeach
+@else
+<p class="small text-uppercase text-center">No Blogs Found</p>
+@endunless
+
+ckbox: {
+                    tokenUrl: 'https://94603.cke-cs.com/token/dev/4cde2817f5cc2e156929c36a9d624c7deffd0fb68f24f8e29a0ca8a5d749?limit=10',
+                },
